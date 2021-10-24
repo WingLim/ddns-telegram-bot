@@ -19,8 +19,8 @@ type IP struct {
 }
 
 type DDNSRequest struct {
-	IPv4 IP `json:"ipv4"`
-	IPv6 IP `json:"ipv6"`
+	IPv4 IP `json:"ipv4,omitempty"`
+	IPv6 IP `json:"ipv6,omitempty"`
 }
 
 func HookHandler(w http.ResponseWriter, r *http.Request) {
@@ -43,17 +43,37 @@ func HookHandler(w http.ResponseWriter, r *http.Request) {
 	text := ""
 
 	if req.IPv4.Result != "未改变" {
-		text += fmt.Sprintf("IPv4: %s", req.IPv4.Result)
-		text += req.IPv4.Addr
-		text += req.IPv4.Domain
+		text += fmt.Sprintf("IPv4: %s\n%s\n%s\n", req.IPv4.Result, req.IPv4.Addr, req.IPv4.Domain)
 	}
 
 	if req.IPv6.Result != "未改变" {
-		text += fmt.Sprintf("IPv6: %s", req.IPv4.Result)
-		text += req.IPv6.Addr
-		text += req.IPv6.Domain
+		text += fmt.Sprintf("IPv6: %s\n%s\n%s\n", req.IPv4.Result, req.IPv6.Addr, req.IPv6.Domain)
 	}
 
-	msg := tgbotapi.NewMessage(chatId, text)
-	_, _ = bot.Send(msg)
+	w.Header().Add("Content-Type", "application/json")
+	if text != "" {
+		msg := tgbotapi.NewMessage(chatId, text)
+		if _, err = bot.Send(msg); err != nil {
+			fmt.Fprintf(w, `
+			{
+				status: "false"
+				msg: "%s"
+			}
+			`, err)
+		} else {
+			fmt.Fprintf(w, `
+			{
+				status: "true"
+			}
+			`)
+		}
+	} else {
+		fmt.Fprint(w, `
+		{
+			status: "false",
+			msg: "IPv4 and IPv6 didn't change"
+		}
+		`)
+	}
+
 }

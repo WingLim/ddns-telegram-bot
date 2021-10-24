@@ -31,7 +31,7 @@ func BotHandler(w http.ResponseWriter, r *http.Request) {
 		case "start":
 			text = "Welcome to use DDNS Bot!"
 		case "gethook":
-			text = fmt.Sprintf("Your Webhook URL:\nhttps://ddns-bot.vercel.dev/api/hook?chatId=%d", chatId)
+			text = fmt.Sprintf("Your Webhook URL:\nhttps://ddns-bot.vercel.app/api/hook?chatId=%d", chatId)
 		}
 
 		data := BotResponse{

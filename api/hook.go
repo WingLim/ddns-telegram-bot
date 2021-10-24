@@ -75,5 +75,5 @@ func HookHandler(w http.ResponseWriter, r *http.Request) {
 			Msg:    "IPv4 and IPv6 didn't change",
 		}
 	}
-	fmt.Fprint(w, resp)
+	_ = json.NewEncoder(w).Encode(resp)
 }

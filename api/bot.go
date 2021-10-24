@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
@@ -17,6 +18,10 @@ type BotResponse struct {
 }
 
 func BotHandler(w http.ResponseWriter, r *http.Request) {
+	host := os.Getenv("HOST")
+	if host == "" {
+		host = "https://ddns-bot.vercel.app"
+	}
 	defer r.Body.Close()
 	body, _ := ioutil.ReadAll(r.Body)
 	var update tgbotapi.Update
@@ -31,7 +36,7 @@ func BotHandler(w http.ResponseWriter, r *http.Request) {
 		case "start":
 			text = "Welcome to use DDNS Bot!"
 		case "gethook":
-			text = fmt.Sprintf("Your Webhook URL:\nhttps://ddns-bot.vercel.app/api/hook?chatId=%d", chatId)
+			text = fmt.Sprintf("Your Webhook URL:\n%s/api/hook?chatId=%d", host, chatId)
 		}
 
 		data := BotResponse{

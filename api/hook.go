@@ -23,6 +23,11 @@ type DDNSRequest struct {
 	IPv6 IP `json:"ipv6,omitempty"`
 }
 
+type HookResponse struct {
+	Status bool   `json:"status"`
+	Msg    string `json:"msg,omitempty"`
+}
+
 func HookHandler(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	body, _ := ioutil.ReadAll(r.Body)
@@ -51,29 +56,24 @@ func HookHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Add("Content-Type", "application/json")
+	var resp HookResponse
 	if text != "" {
 		msg := tgbotapi.NewMessage(chatId, text)
 		if _, err = bot.Send(msg); err != nil {
-			fmt.Fprintf(w, `
-			{
-				status: "false"
-				msg: "%s"
+			resp = HookResponse{
+				Status: false,
+				Msg:    err.Error(),
 			}
-			`, err)
 		} else {
-			fmt.Fprintf(w, `
-			{
-				status: "true"
+			resp = HookResponse{
+				Status: true,
 			}
-			`)
 		}
 	} else {
-		fmt.Fprint(w, `
-		{
-			status: "false",
-			msg: "IPv4 and IPv6 didn't change"
+		resp = HookResponse{
+			Status: true,
+			Msg:    "IPv4 and IPv6 didn't change",
 		}
-		`)
 	}
-
+	fmt.Fprint(w, resp)
 }

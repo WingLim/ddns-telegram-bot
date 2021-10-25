@@ -15,12 +15,12 @@
     "ipv4": {
         "result": "#{ipv4Result}",
         "addr": "#{ipv4Addr}",
-        "domain": "#{ipv4Domains}"
+        "domains": "#{ipv4Domains}"
     },
     "ipv6": {
         "result": "#{ipv6Result}",
         "addr": "#{ipv6Addr}",
-        "domain": "#{ipv6Domains}"
+        "domains": "#{ipv6Domains}"
     }
 }
 

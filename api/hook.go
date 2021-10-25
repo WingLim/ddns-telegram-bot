@@ -13,9 +13,9 @@ import (
 )
 
 type IP struct {
-	Result string `json:"result"`
-	Addr   string `json:"addr"`
-	Domain string `json:"domain"`
+	Result  string `json:"result"`
+	Addr    string `json:"addr"`
+	Domains string `json:"domains"`
 }
 
 type DDNSRequest struct {
@@ -27,6 +27,8 @@ type HookResponse struct {
 	Status bool   `json:"status"`
 	Msg    string `json:"msg,omitempty"`
 }
+
+const Template = "%s: %s\nIP: %s\nDomains: %s\n"
 
 func HookHandler(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
@@ -48,11 +50,11 @@ func HookHandler(w http.ResponseWriter, r *http.Request) {
 	text := ""
 
 	if req.IPv4.Addr != "" {
-		text += fmt.Sprintf("IPv4: %s\n%s\n%s\n", req.IPv4.Result, req.IPv4.Addr, req.IPv4.Domain)
+		text += fmt.Sprintf(Template, "IPv4", req.IPv4.Result, req.IPv4.Addr, req.IPv4.Domains)
 	}
 
 	if req.IPv6.Addr != "" {
-		text += fmt.Sprintf("IPv6: %s\n%s\n%s\n", req.IPv6.Result, req.IPv6.Addr, req.IPv6.Domain)
+		text += fmt.Sprintf(Template, "IPv6", req.IPv6.Result, req.IPv6.Addr, req.IPv6.Domains)
 	}
 
 	var resp HookResponse

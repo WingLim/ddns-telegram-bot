@@ -19,8 +19,8 @@ type IP struct {
 }
 
 type DDNSRequest struct {
-	IPv4 *IP `json:"ipv4,omitempty"`
-	IPv6 *IP `json:"ipv6,omitempty"`
+	IPv4 IP `json:"ipv4,omitempty"`
+	IPv6 IP `json:"ipv6,omitempty"`
 }
 
 type HookResponse struct {
@@ -40,18 +40,18 @@ func HookHandler(w http.ResponseWriter, r *http.Request) {
 	token := os.Getenv("TOKEN")
 	bot, err := tgbotapi.NewBotAPI(token)
 	if err != nil {
-		log.Fatal("Error to create a Telegram bot", err)
+		log.Fatal("Error to create a Telegram bot: ", err)
 	}
 
 	chatId, _ := strconv.ParseInt(r.URL.Query().Get("chatId"), 10, 64)
 
 	text := ""
 
-	if req.IPv4 != nil {
+	if req.IPv4.Addr != "" {
 		text += fmt.Sprintf("IPv4: %s\n%s\n%s\n", req.IPv4.Result, req.IPv4.Addr, req.IPv4.Domain)
 	}
 
-	if req.IPv6 != nil {
+	if req.IPv6.Addr != "" {
 		text += fmt.Sprintf("IPv6: %s\n%s\n%s\n", req.IPv4.Result, req.IPv6.Addr, req.IPv6.Domain)
 	}
 

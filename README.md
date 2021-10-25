@@ -4,6 +4,8 @@
 
 一个用于接收 [ddns-go](https://github.com/jeessy2/ddns-go) 通知的 Telegram 机器人
 
+![Snapshot](snapshot.png)
+
 ## 使用
 
 1. 打开并启用 https://t.me/DDNSGoBot

@@ -1,4 +1,4 @@
-module ddns-go-bot
+module ddns-telegram-bot
 
 go 1.17
 

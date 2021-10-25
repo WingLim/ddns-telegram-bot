@@ -8,10 +8,13 @@
 
 ## 使用
 
-1. 打开并启用 https://t.me/DDNSGoBot
+1. 打开并启用 [@DDNSGoBot](https://t.me/DDNSGoBot)
 2. 发送 `/gethook` 命令
 3. 复制 Webhook URL 并粘贴
 4. 复制 RequestBody 并粘贴
+
+注：未启用 IPv4 或 IPv6 可删除对应 Object
+
 ```json
 {
     "ipv4": {

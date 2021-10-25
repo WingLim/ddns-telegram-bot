@@ -52,7 +52,7 @@ func HookHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if req.IPv6.Addr != "" {
-		text += fmt.Sprintf("IPv6: %s\n%s\n%s\n", req.IPv4.Result, req.IPv6.Addr, req.IPv6.Domain)
+		text += fmt.Sprintf("IPv6: %s\n%s\n%s\n", req.IPv6.Result, req.IPv6.Addr, req.IPv6.Domain)
 	}
 
 	var resp HookResponse

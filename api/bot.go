@@ -39,14 +39,13 @@ func BotHandler(w http.ResponseWriter, r *http.Request) {
 			text = fmt.Sprintf("Your Webhook URL:\n%s/api/hook?chatId=%d", host, chatId)
 		}
 
-		data := BotResponse{
+		resp := BotResponse{
 			Msg:    text,
 			ChatID: chatId,
 			Method: "sendMessage",
 		}
 
-		msg, _ := json.Marshal(data)
 		w.Header().Add("Content-Type", "application/json")
-		fmt.Fprint(w, string(msg))
+		_ = json.NewEncoder(w).Encode(resp)
 	}
 }

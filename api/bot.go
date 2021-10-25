@@ -12,9 +12,10 @@ import (
 )
 
 type BotResponse struct {
-	Msg    string `json:"text"`
-	ChatID int64  `json:"chat_id"`
-	Method string `json:"method"`
+	Msg         string      `json:"text"`
+	ChatID      int64       `json:"chat_id"`
+	Method      string      `json:"method"`
+	ReplyMarkup interface{} `json:"reply_markup,omitempty"`
 }
 
 func BotHandler(w http.ResponseWriter, r *http.Request) {
@@ -30,6 +31,10 @@ func BotHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	chatId := update.Message.Chat.ID
+	resp := BotResponse{
+		ChatID: chatId,
+		Method: "sendMessage",
+	}
 	text := ""
 	if update.Message.IsCommand() {
 		switch update.Message.Command() {
@@ -37,13 +42,14 @@ func BotHandler(w http.ResponseWriter, r *http.Request) {
 			text = "Welcome to use DDNS Bot!"
 		case "gethook":
 			text = fmt.Sprintf("Your Webhook URL:\n%s/api/hook?chatId=%d", host, chatId)
+			inlineButtons := []tgbotapi.InlineKeyboardButton{}
+			usage := tgbotapi.NewInlineKeyboardButtonURL("Usage", "https://github.com/WingLim/ddns-telegram-bot/blob/main/README.md")
+			inlineButtons = append(inlineButtons, usage)
+			inlineKM := tgbotapi.NewInlineKeyboardMarkup(inlineButtons)
+			resp.ReplyMarkup = inlineKM
 		}
 
-		resp := BotResponse{
-			Msg:    text,
-			ChatID: chatId,
-			Method: "sendMessage",
-		}
+		resp.Msg = text
 
 		w.Header().Add("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(resp)

@@ -6,10 +6,9 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"strconv"
 
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	tb "gopkg.in/tucnak/telebot.v2"
 )
 
 type IP struct {
@@ -39,16 +38,9 @@ func HookHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal("Error to parse DDNS request: ", err)
 	}
 
-	token := os.Getenv("TOKEN")
-	bot, err := tgbotapi.NewBotAPI(token)
-	if err != nil {
-		log.Fatal("Error to create a Telegram bot: ", err)
-	}
-
 	chatId, _ := strconv.ParseInt(r.URL.Query().Get("chatId"), 10, 64)
 
 	text := ""
-
 	if req.IPv4.Addr != "" {
 		text += fmt.Sprintf(Template, "IPv4", req.IPv4.Result, req.IPv4.Addr, req.IPv4.Domains)
 	}
@@ -57,9 +49,13 @@ func HookHandler(w http.ResponseWriter, r *http.Request) {
 		text += fmt.Sprintf(Template, "IPv6", req.IPv6.Result, req.IPv6.Addr, req.IPv6.Domains)
 	}
 
+	chat := &tb.Chat{
+		ID: chatId,
+	}
+
 	var resp HookResponse
-	msg := tgbotapi.NewMessage(chatId, text)
-	if _, err = bot.Send(msg); err != nil {
+
+	if _, err := bot.Send(chat, text); err != nil {
 		resp = HookResponse{
 			Status: false,
 			Msg:    err.Error(),

@@ -1,0 +1,22 @@
+{
+  "name": "ddns-telegram-bot",
+  "version": "1.0.0",
+  "description": "A telegram bot for ddns-go",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WingLim/ddns-telegram-bot.git"
+  },
+  "author": "WingLim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/WingLim/ddns-telegram-bot/issues"
+  },
+  "homepage": "https://github.com/WingLim/ddns-telegram-bot#readme",
+  "devDependencies": {
+    "@vercel/node": "^1.12.1"
+  },
+  "dependencies": {
+    "grammy": "^1.3.4"
+  }
+}

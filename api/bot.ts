@@ -1,7 +1,7 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
 import { Bot, InlineKeyboard, webhookCallback } from 'grammy'
 
-const { BOT_TOKEN, VERCEL_URL } = process.env
+const { BOT_TOKEN, BOT_URL } = process.env
 
 export const bot = new Bot(BOT_TOKEN)
 
@@ -11,7 +11,7 @@ bot.command('start', async (ctx) => {
 
 bot.command('gethook', async (ctx) => {
     const chanId = ctx.message.chat.id
-    const hookUrl = `https://${VERCEL_URL}/api/hook/${chanId}`
+    const hookUrl = `https://${BOT_URL}/api/hook/${chanId}`
     const links = new InlineKeyboard()
         .url('Usage', 'https://github.com/WingLim/ddns-telegram-bot/blob/main/README.md')
     await ctx.reply(`Your Webhook URL:\n ${hookUrl}`, {

@@ -1,5 +1,5 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
-import { bot } from '../../index'
+import { bot } from '../bot'
 
 type IP = {
     result: string

@@ -1,8 +1,9 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
-import { InlineKeyboard, webhookCallback } from 'grammy'
-import { bot } from '../index'
+import { Bot, InlineKeyboard, webhookCallback } from 'grammy'
 
-const { VERCEL_URL } = process.env
+const { BOT_TOKEN, VERCEL_URL } = process.env
+
+export const bot = new Bot(BOT_TOKEN)
 
 bot.command('start', async (ctx) => {
     await ctx.reply('Welcome to use DDNS Bot')

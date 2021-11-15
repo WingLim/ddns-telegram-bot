@@ -2,6 +2,8 @@ import { Bot } from 'grammy'
 
 const { BOT_TOKEN, BOT_WEBHOOK } = process.env
 
-export const bot = new Bot(BOT_TOKEN)
+const bot = new Bot(BOT_TOKEN)
 
-bot.api.setWebhook(BOT_WEBHOOK)
+console.log('Setting Webhook')
+let res = await bot.api.setWebhook(BOT_WEBHOOK)
+console.log(res)
